@@ -1,3 +1,4 @@
+//2026.05.03 success
 #include <string>
 #include <vector>
 
@@ -9,7 +10,7 @@ vector<int> solution(int brown, int yellow) {
     int col;
 
     if (total % 2 == 0) {
-        row = total/2; 
+        row = total/2;
         col = total/2;
     } else {
         row = total/2+1;
@@ -29,7 +30,7 @@ vector<int> solution(int brown, int yellow) {
 }
 
 /*
-b b b b 
+b b b b
 b y y b
 b b b b
 
