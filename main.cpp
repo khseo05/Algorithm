@@ -1,58 +1,49 @@
-//2026.05.08 success
+//2026.05.08 fail
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
-vector<int> answer;
-vector<int> ryan(11, 0);
-int maxDiff;
+struct Node {
+    string name;
+    bool check;
+};
 
-bool isBetter(vector<int> a, vector<int>& b) {
-    for (int i = 10; i >= 0; i--) {
-        if (a[i] != b[i]) return a[i] > b[i];
+bool dfs (unordered_map<string, vector<Node>>& m, vector<string>& answer, string begin, int cnt) {
+    if (answer.size() == cnt+1) return true;
+
+    for (Node& next : m[begin]) {
+        if (next.check) continue;
+
+        next.check = true; 
+        answer.push_back(next.name);
+        if (dfs(m, answer, next.name, cnt)) return true;;
+        next.check = false;
+        answer.pop_back();
     }
+
     return false;
-}
+} 
 
-void dfs(int idx, int remain, vector<int> info) {
-    if (idx == 11 || remain == 0) {
-        ryan[10] += remain;
-        
-        int apeach = 0, lion = 0;
-        for (int i = 0; i < 11; i++) {
-            if (info[i] == 0 && ryan[i] == 0) continue;
-            if (ryan[i] > info[i]) lion += (10 - i);
-            else apeach += (10 - i);
-        }
-        
-        int diff = lion - apeach;
-        if (diff > 0) {
-            if (diff > maxDiff || (diff == maxDiff && isBetter(ryan, answer))) {
-                maxDiff = diff;
-                answer = ryan;
-            }
-        }
-        
-        ryan[10] -= remain;
-        return;
+vector<string> solution(vector<vector<string>> tickets) {
+    unordered_map<string, vector<Node>> m;
+    for (int i=0; i<tickets.size(); i++) {
+        string a = tickets[i][0];
+        string b = tickets[i][1];
+        m[a].push_back({b, false});
     }
-    
-    if (remain > info[idx]) {
-        ryan[idx] = info[idx] + 1;
-        dfs(idx + 1, remain - info[idx] - 1, info);
-        ryan[idx] = 0;
-    }
-    
-    ryan[idx] = 0;
-    dfs(idx + 1, remain, info);
-}
 
-vector<int> solution(int n, vector<int> info) {
-    maxDiff = 0;
-    
-    dfs(0, n, info);
-    
-    if (maxDiff == 0) return {-1};
+    for (auto& x : m) {
+        sort(x.second.begin(), x.second.end(), [](Node a, Node b) {
+            return a.name < b.name;
+        });
+    }
+
+    vector<string> answer;
+    answer.push_back("ICN");
+
+    dfs(m, answer, "ICN", tickets.size());
     return answer;
 }

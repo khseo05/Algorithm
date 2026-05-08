@@ -1,5 +1,6 @@
 //2026.05.01 fail
 //2026.05.05 fail
+//2026.05.08 fail
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -8,21 +9,19 @@
 using namespace std;
 
 struct Node {
-        string str;
-        bool check = false;
+    string name;
+    bool check;
 };
 
-bool dfs(string begin, unordered_map<string, vector<Node>>& m, vector<string>& answer, int ticketCount) {
-    if (answer.size() == ticketCount + 1) return true;
+bool dfs (unordered_map<string, vector<Node>>& m, vector<string>& answer, string begin, int cnt) {
+    if (answer.size() == cnt+1) return true;
 
     for (Node& next : m[begin]) {
         if (next.check) continue;
 
         next.check = true;
-        answer.push_back(next.str);
-
-        if(dfs(next.str, m, answer, ticketCount)) return true;
-
+        answer.push_back(next.name);
+        if (dfs(m, answer, next.name, cnt)) return true;;
         next.check = false;
         answer.pop_back();
     }
@@ -35,20 +34,18 @@ vector<string> solution(vector<vector<string>> tickets) {
     for (int i=0; i<tickets.size(); i++) {
         string a = tickets[i][0];
         string b = tickets[i][1];
-
         m[a].push_back({b, false});
     }
 
     for (auto& x : m) {
         sort(x.second.begin(), x.second.end(), [](Node a, Node b) {
-            return a.str < b.str;
+            return a.name < b.name;
         });
     }
 
     vector<string> answer;
     answer.push_back("ICN");
 
-    dfs("ICN", m, answer, tickets.size());
-
+    dfs(m, answer, "ICN", tickets.size());
     return answer;
 }
