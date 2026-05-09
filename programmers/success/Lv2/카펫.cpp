@@ -1,37 +1,26 @@
 //2026.05.03 success
+//2026.05.09 success
 #include <string>
 #include <vector>
 
 using namespace std;
 
 vector<int> solution(int brown, int yellow) {
-    int total = (brown-4)/2;
-    int row;
-    int col;
-
-    if (total % 2 == 0) {
-        row = total/2;
-        col = total/2;
-    } else {
-        row = total/2+1;
-        col = total/2;
-    }
-
-    while (true) {
-        if (row * col == yellow) break;
-        row += 1;
-        col -= 1;
-    }
+    int b = (brown - 4) / 2;
+    int row = b;
+    int col = 0;
 
     vector<int> answer;
-    answer.push_back(row+2);
-    answer.push_back(col+2);
+    while (row >= col) {
+        if (row * col == yellow) {
+            answer.push_back(row+2);
+            answer.push_back(col+2);
+            break;
+        }
+
+        row--;
+        col++;
+    }
+
     return answer;
 }
-
-/*
-b b b b
-b y y b
-b b b b
-
-*/
