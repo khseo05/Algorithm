@@ -1,41 +1,53 @@
 //2026.05.04 success
+//2026.05.09 success
 #include <string>
 #include <vector>
 #include <cmath>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
-void dfs(vector<int>& v, vector<bool>& visited, string num, string numbers) {
+vector<int> w;
+unordered_map<int, bool> m;
+
+void dfs(vector<bool>& v, string numbers, string& s) {
     for (int i=0; i<numbers.length(); i++) {
-        if (visited[i]) continue;
-        visited[i] = true;
-        num.push_back(numbers[i]);
-        v.push_back(stoi(num));
-        dfs(v, visited, num, numbers);
-        num.pop_back();
-        visited[i] = false;
+        if (v[i]) continue;
+        v[i] = true;
+        s += numbers[i];
+        int n = stoi(s);
+
+        if (!m[n]) {
+            m[n] = true;
+            w.push_back(n);
+        }
+
+        dfs(v, numbers, s);
+
+        v[i] = false;
+        s.pop_back();
     }
 }
 
 int solution(string numbers) {
-    vector<int> v;
-    vector<bool> visited(numbers.length(), false);
-    dfs(v, visited, "", numbers);
+    vector<bool> v(numbers.length(), false);
+
+    string s = "";
+    dfs(v, numbers, s);
 
     int answer = 0;
-    map<int , bool> m;
+    for (int n : w) {
+        if (n==0 || n==1) continue;
 
-    for (int i=0; i<v.size(); i++) {
-        if (m[v[i]]) continue;
-        if (v[i] == 0 || v[i] == 1) continue;
-        bool isPrime = true;
-        for (int j=2; j <= sqrt(v[i]); j++) {
-            if (v[i]%j==0) isPrime = false;
+        bool check = false;
+        for (int i=2; i<=sqrt(n); i++) {
+            if (n%i==0) {
+                check = true;
+                break;
+            }
         }
 
-        m[v[i]] = true;
-        if (isPrime) answer += 1;
+        if (!check) answer += 1;
     }
 
     return answer;
