@@ -1,46 +1,52 @@
-//2026.05.11 fail
+//2026.05.16 success
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
-bool isUnique(vector<vector<string>> relation, int mask) {
-    unordered_map<string, bool> m;
+struct Node {
+    string name;
+    bool check;
+};
 
-    for (int i=0; i<relation.size(); i++) {
-        string str;
-        for (int j=0; j<relation[0].size(); j++) {
-            if (!(mask & (1 << j))) continue;
-            str += relation[i][j];
-        }
-        if (m[str]) return false;
-        m[str] = true;
+bool dfs(vector<vector<string>>& tickets, unordered_map<string, vector<Node>>& m, vector<string>& answer, string begin) {
+    if (answer.size() == tickets.size()+1) return true;
+
+    for (auto& x : m[begin]) {
+        if (x.check) continue;
+
+        x.check = true;
+        answer.push_back(x.name);
+
+        if(dfs(tickets, m, answer, x.name)) return true;
+
+        x.check = false;
+        answer.pop_back();
     }
 
-    return true;
+    return false;
 }
 
-int solution(vector<vector<string>> relation) {
-    int size = relation.size();
-
-    vector<int> answer;
-
-    for (int mask = 1; mask < (1 << relation[0].size()); mask++) {
-        bool min = true;
-        for (int ans : answer) {
-            if ((mask & ans) == ans) {
-                min = false;
-                break;
-            }
-        }
-
-        if (!min) continue;
-
-        if (isUnique(relation, mask)) {
-            answer.push_back(mask);
-        }
+vector<string> solution(vector<vector<string>> tickets) {
+    unordered_map<string, vector<Node>> m;
+    for (int i=0; i<tickets.size(); i++) {
+        string a = tickets[i][0];
+        string b = tickets[i][1];
+        m[a].push_back({b, false});
     }
 
-    return answer.size();
+    for (auto& x : m) {
+        sort(x.second.begin(), x.second.end(), [](Node& a, Node& b) {
+            return a.name < b.name;
+        });
+    }
+
+    vector<string> answer;
+    answer.push_back("ICN");
+    
+    dfs(tickets, m, answer, "ICN");
+
+    return answer;
 }
