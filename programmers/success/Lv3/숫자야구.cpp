@@ -1,3 +1,4 @@
+//2026.05.03 fail
 //2026.05.23 success
 #include <string>
 #include <vector>
@@ -71,11 +72,11 @@ void compareCnt(string& h, vector<string>& ans) {
                         if (compare[j] == target[i]) {
                             ball++;
                             break;
-                        }   
+                        }
                     }
                 }
             }
-            
+
             string s = to_string(strike) + to_string(ball);
             m[s]++;
         }
