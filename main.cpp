@@ -1,26 +1,38 @@
 //2026.05.23 success
 #include <string>
 #include <vector>
+#include <set>
 
 using namespace std;
 
-string solution(string number, int k) {
-    string answer = "";
-    answer.push_back(number[0]);
+set<int> answer;
 
-    int cnt = 0;
-    for (int i=1; i<number.length(); i++) {
-        while (!answer.empty() && number[i] > answer.back() && cnt < k) {
-            answer.pop_back();
-            cnt++;
-        }
-        answer.push_back(number[i]);
+bool match(string user, string ban) {
+    if (user.length() != ban.length()) return false;
+
+    for (int i=0; i<user.length(); i++) {
+        if (ban[i] != '*' && user[i] != ban[i]) return false; 
     }
 
-    while (cnt < k) {
-        answer.pop_back();
-        cnt++;
+    return true;
+}
+
+void dfs(vector<string>& user_id, vector<string>& banned_id, int idx, int mask) {
+    if (idx == banned_id.size()) {
+        answer.insert(mask);
+        return;
     }
 
-    return answer;
+    for (int i=0; i<user_id.size(); i++) {
+        if (mask & (1 << i)) continue;
+        if (!match(user_id[i], banned_id[idx])) continue;
+
+        dfs(user_id, banned_id, idx+1, mask | (1 << i));
+    }
+} 
+
+int solution(vector<string> user_id, vector<string> banned_id) {
+    dfs(user_id, banned_id, 0, 0);
+
+    return answer.size();
 }

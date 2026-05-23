@@ -1,28 +1,28 @@
 //2026.05.15 fail
 //2026.05.17 fail
 //2026.05.18 fail
+//2026.05.23 success
 #include <string>
 #include <vector>
 #include <set>
 
 using namespace std;
 
-set<int> s;
+set<int> answer;
 
-bool match(string u, string b) {
-    if (u.length() != b.length()) return false;
+bool match(string user, string ban) {
+    if (user.length() != ban.length()) return false;
 
-
-    for (int i=0; i<u.length(); i++) {
-        if (b[i] != '*' && u[i] != b[i]) return false;
+    for (int i=0; i<user.length(); i++) {
+        if (ban[i] != '*' && user[i] != ban[i]) return false;
     }
 
     return true;
 }
 
-void dfs(vector<string>& user_id, vector<string>& banned_id, int mask, int idx) {
+void dfs(vector<string>& user_id, vector<string>& banned_id, int idx, int mask) {
     if (idx == banned_id.size()) {
-        s.insert(mask);
+        answer.insert(mask);
         return;
     }
 
@@ -30,11 +30,12 @@ void dfs(vector<string>& user_id, vector<string>& banned_id, int mask, int idx) 
         if (mask & (1 << i)) continue;
         if (!match(user_id[i], banned_id[idx])) continue;
 
-        dfs(user_id, banned_id, mask | (1 << i), idx+1);
+        dfs(user_id, banned_id, idx+1, mask | (1 << i));
     }
 }
 
 int solution(vector<string> user_id, vector<string> banned_id) {
     dfs(user_id, banned_id, 0, 0);
-    return s.size();
+
+    return answer.size();
 }
