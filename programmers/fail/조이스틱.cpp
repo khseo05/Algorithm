@@ -1,4 +1,5 @@
 //2026.05.20 fail
+//2026.05.23 fail
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -7,22 +8,20 @@ using namespace std;
 
 int solution(string name) {
     int answer = 0;
-    for (int i=0; i<name.length(); i++) {
-        answer = min(name[i] - 'A', 'Z' - name[i] + 1) + answer;
-    }
-
-    int cnt = 0;
     for (char n : name) {
-        if (n == 'A') cnt++;
+        answer = min(n - 'A', 'Z' - n + 1) + answer;
     }
 
-    name[0] = 'A';
-    while(true) {
-        int left = 0;
-        int right = 0;
+    int minMove = name.length()-1;
+    for (int i=0; i<name.length(); i++) {
+        int j = i+1;
+        while (name[j] == 'A' && j < name.length()) j++;
 
-        
+        int priorLeft = i + i + (name.length() - j);
+        int priorRight = (name.length() - j) + (name.length() - j) + i;
+
+        minMove = min({priorLeft, priorRight, minMove});
     }
 
-    return answer;
+    return answer + minMove;
 }
