@@ -4,29 +4,23 @@
 
 using namespace std;
 
-vector<int> solution(int n, long long k) {
-    vector<int> answer;
-    vector<int> v;
+string solution(string number, int k) {
+    string answer = "";
+    answer.push_back(number[0]);
 
-    for (int i=1; i<=n; i++) {
-        v.push_back(i);
-    }
-
-    long long fac = 1;
-    for (int i=2; i<n; i++) {
-        fac *= i;
-    }
-
-    k--;
-    for (int i=n; i>0; i--) {
-        int idx = k / fac;
-        answer.push_back(v[idx]);
-        v.erase(v.begin() + idx);
-
-        if (i > 1) {
-            k %= fac;
-            fac /= (i-1);
+    int cnt = 0;
+    for (int i=1; i<number.length(); i++) {
+        while (!answer.empty() && number[i] > answer.back() && cnt < k) {
+            answer.pop_back();
+            cnt++;
         }
+        answer.push_back(number[i]);
     }
+
+    while (cnt < k) {
+        answer.pop_back();
+        cnt++;
+    }
+
     return answer;
 }

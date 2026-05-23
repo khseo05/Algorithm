@@ -1,4 +1,5 @@
 //2026.05.21 fail
+//2026.05.23 success
 #include <string>
 #include <vector>
 
@@ -6,19 +7,21 @@ using namespace std;
 
 string solution(string number, int k) {
     string answer = "";
-    for (int i=0; i<number.length(); i++) {
-        while(k > 0 && !answer.empty() && answer.back() < number[i]) {
-            answer.pop_back();
-            k--;
-        }
+    answer.push_back(number[0]);
 
+    int cnt = 0;
+    for (int i=1; i<number.length(); i++) {
+        while (!answer.empty() && number[i] > answer.back() && cnt < k) {
+            answer.pop_back();
+            cnt++;
+        }
         answer.push_back(number[i]);
     }
 
-    while (k > 0) {
+    while (cnt < k) {
         answer.pop_back();
-        k--;
+        cnt++;
     }
-    
+
     return answer;
 }
