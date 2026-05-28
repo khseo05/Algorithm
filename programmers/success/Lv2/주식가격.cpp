@@ -1,4 +1,4 @@
-//2026.05.27 success
+//2026.05.28 success
 #include <string>
 #include <vector>
 
@@ -6,7 +6,7 @@ using namespace std;
 
 vector<int> solution(vector<int> prices) {
     vector<int> answer;
-
+    
     int n = prices.size();
     for (int i=0; i<n; i++) {
         int sec = 0;
@@ -16,6 +16,6 @@ vector<int> solution(vector<int> prices) {
         }
         answer.push_back(sec);
     }
-
+    
     return answer;
 }
