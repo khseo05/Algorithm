@@ -11,7 +11,7 @@ int solution(string skill, vector<string> skill_trees) {
     for (auto x : skill) {
         regist[x] = true;
     }
-    
+
     for (string st : skill_trees) {
         unordered_map<char, bool> m;
         bool bb = true;
@@ -22,7 +22,7 @@ int solution(string skill, vector<string> skill_trees) {
                 if (x == c) {
                     m[x] = true;
                     break;
-                } 
+                }
                 if (!m[x]) {
                     b = false;
                     break;
