@@ -8,8 +8,8 @@ using namespace std;
 
 vector<int> solution(vector<int> fees, vector<string> records) {
     vector<int> answer;
-    unordered_map<string, int> inTime;  
-    map<string, int> totalTime;       
+    unordered_map<string, int> inTime;
+    map<string, int> totalTime;
 
     for (string re : records) {
         stringstream ss(re);
@@ -32,9 +32,9 @@ vector<int> solution(vector<int> fees, vector<string> records) {
             }
         }
 
-        if (!inTime.count(carNum)) { 
+        if (!inTime.count(carNum)) {
             inTime[carNum] = time;
-        } else {                      
+        } else {
             totalTime[carNum] += time - inTime[carNum];
             inTime.erase(carNum);
         }
