@@ -1,6 +1,5 @@
 // 2026.09.25 success
 #include <iostream>
-#include <vector>
 #include <cmath>
 
 using namespace std;
