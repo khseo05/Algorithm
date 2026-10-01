@@ -1,0 +1,35 @@
+//2026.10.01 성공
+#include <string>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+vector<int> solution(vector<int> sequence, int k) {
+    vector<int> answer;
+    queue<int> q;
+    int n = 0;
+    int start = 0, end = INT_MAX;
+    for (int i=0; i<sequence.size(); i++) {
+        n += sequence[i];
+        q.push(sequence[i]);
+        
+        while (n > k) {
+            n -= q.front();
+            q.pop();
+        }
+        
+        int left = i - q.size() + 1;
+        
+        if (n == k && end - start > i - left) {
+            start = left;
+            end = i;
+        }
+    }
+    
+    answer.push_back(start);
+    answer.push_back(end);
+    
+    return answer;
+}
