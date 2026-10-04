@@ -1,0 +1,32 @@
+//2026.10.04 실패
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int dfs(int n, int k, vector<int>& enemy, int round) {
+    if (round == enemy.size()) {
+        return enemy.size();
+    } else if (n < enemy[round] && k == 0) {
+        return round;
+    }
+    
+    int c1 = 0, c2 = 0;
+    
+    // use
+    if (k > 0 && round < enemy.size()) {
+        c1 = dfs(n, k-1, enemy, round+1);
+    }
+    
+    // non-use
+    if (round < enemy.size() && n >= enemy[round]) {
+        c2 = dfs(n-enemy[round], k, enemy, round+1);
+    }
+    
+    return max(c1, c2);
+}   
+
+int solution(int n, int k, vector<int> enemy) {
+    return dfs(n, k, enemy, 0);
+}
