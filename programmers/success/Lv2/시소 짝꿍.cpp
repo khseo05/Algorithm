@@ -1,4 +1,5 @@
 //2026.10.02 실패
+//2026.10.12 성공
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -11,12 +12,11 @@ long long solution(vector<int> weights) {
     unordered_map<long long, long long> cnt;
     unordered_map<long long, bool> b;
     
-    for (auto w : weights) cnt[w]++;
-    
     for (auto w : weights) {
         m[w*2].push_back(w);
         m[w*3].push_back(w);
         m[w*4].push_back(w);
+        cnt[w]++;
     }
     
     for (auto x : m) {
@@ -25,7 +25,7 @@ long long solution(vector<int> weights) {
     }
     
     for (auto x : cnt) {
-        answer += x.second * (x.second-1) / 2;
+        answer -= x.second * (x.second-1);
     }
     
     return answer;
