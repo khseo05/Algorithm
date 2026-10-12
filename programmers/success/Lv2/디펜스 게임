@@ -1,0 +1,25 @@
+//2026.10.04 실패
+//2026.10.12 성공
+#include <string>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+int solution(int n, int k, vector<int> enemy) {
+    int answer = 0;
+    priority_queue<int> q;
+    for (int i=0; i<enemy.size(); i++) {
+        q.push(enemy[i]);
+        if (n >= enemy[i]) n -= enemy[i];
+        else if (n + q.top() >= enemy[i] && k > 0) {
+            k--;
+            n += q.top() - enemy[i];
+            q.pop();
+        } else {
+            return answer;
+        }
+        answer++;
+    }
+    return answer;
+}
